@@ -7,23 +7,23 @@
  */
 -- DROP TABLE `User`;
 CREATE TABLE `User` (
-                        `id_user` BIGINT,
-                        `username` VARCHAR(255),
-                        `password` VARCHAR(255),
-                        `email` varchar(255),
-                        PRIMARY KEY (`id_user`)
+    `id` BIGINT,
+    `username` VARCHAR(255),
+    `password` VARCHAR(255),
+    `email` varchar(255),
+    PRIMARY KEY (`id`)
 );
 
 -- DROP TABLE `Birthday`;
 CREATE TABLE `Birthday` (
-                            `id_birthday` BIGINT,
-                            `date` DATE,
-                            `firstname` VARCHAR(255),
-                            `lastname` VARCHAR(255),
-                            `id_user` BIGINT,
-                            PRIMARY KEY (`id_birthday`),
-                            FOREIGN KEY (`id_user`)
-                                REFERENCES `User`(`id_user`)
+    `id` BIGINT,
+    `date` DATE,
+    `firstname` VARCHAR(255),
+    `lastname` VARCHAR(255),
+    `user_id` BIGINT,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`)
+        REFERENCES `User`(`id`)
 );
 
 /* ---------------------------------------------------------------
