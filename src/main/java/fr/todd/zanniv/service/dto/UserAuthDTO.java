@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-public class UserPostDTO {
-
-    @JsonProperty("username")
-    private String username;
+public class UserAuthDTO {
 
     @Email
     @NotNull
@@ -23,20 +20,22 @@ public class UserPostDTO {
         return email;
     }
 
-
-    public String getUsername() {
-        return username;
-    }
-
     public String getPassword() {
         return password;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
-        return "UserPostDTO{" +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
+        return "UserAuthDTO{" +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

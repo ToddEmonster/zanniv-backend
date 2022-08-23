@@ -1,6 +1,7 @@
 package fr.todd.zanniv.service;
 
 import fr.todd.zanniv.entity.User;
+import fr.todd.zanniv.exception.UserNotFoundException;
 import fr.todd.zanniv.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,12 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User login(String username, String password) {
+    public User login(String username, String password) throws UserNotFoundException {
         Optional<User> optionalUser = userRepository.findUserByUsernameAndPassword(username, password);
-        if (optionalUser.isPresent()) {
-            return optionalUser.get();
-        } else {
-            // TODO 403 throw UserNotFoundError;
-            return null;
+        if (!optionalUser.isPresent()) {
+            throw new UserNotFoundException();
         }
+        return optionalUser.get();
     }
 
     @Override
@@ -35,10 +34,11 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(user);
     }
 
-    public User findById(Long userId) {
-        Optional<User> userOpt = this.userRepository.findById(userId);
-        if (userOpt.isPresent()) {
-            return userOpt.get();
-        } return null; // TODO throw error "user not found with id"
+    public User getUserById(Long userId) throws UserNotFoundException {
+        Optional<User> optionalUser = this.userRepository.findById(userId);
+        if (!optionalUser.isPresent()) {
+            throw new UserNotFoundException();
+        }
+        return optionalUser.get();
     }
 }

@@ -52,6 +52,26 @@ public class User {
         return birthdays;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBirthdays(Set<Birthday> birthdays) {
+        this.birthdays = birthdays;
+    }
+
     @Override
     public String toString() {
         return "User{" +

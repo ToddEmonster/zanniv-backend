@@ -2,7 +2,7 @@ package fr.todd.zanniv.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserGetDto {
+public class UserGetDTO {
     @JsonProperty("id")
     private int id;
 
@@ -10,7 +10,7 @@ public class UserGetDto {
     private String email;
 
     @JsonProperty("username")
-    private String name;
+    private String username;
 
     public int getId() {
         return id;
@@ -20,8 +20,20 @@ public class UserGetDto {
         return email;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -29,7 +41,7 @@ public class UserGetDto {
         return "UserGetDto{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 '}';
     }
 }

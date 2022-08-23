@@ -1,6 +1,5 @@
 package fr.todd.zanniv.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -50,6 +49,26 @@ public class Birthday {
     @JsonIgnoreProperties({ "birthdays" })
     public User getUser() {
         return user;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
