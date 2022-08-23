@@ -1,6 +1,10 @@
 package fr.todd.zanniv.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="Birthday")
@@ -10,14 +14,14 @@ public class Birthday {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="username")
-    private String username;
+    @Column(name="date")
+    private LocalDate date;
 
-    @Column(name="password")
-    private String password;
+    @Column(name="firstname")
+    private String firstname;
 
-    @Column(name="email")
-    private String email;
+    @Column(name="lastname")
+    private String lastname;
 
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
@@ -31,18 +35,19 @@ public class Birthday {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public String getPassword() {
-        return password;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLastname() {
+        return lastname;
     }
 
+    @JsonIgnoreProperties({ "birthdays" })
     public User getUser() {
         return user;
     }
@@ -51,9 +56,10 @@ public class Birthday {
     public String toString() {
         return "Birthday{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
+                ", date=" + date +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", user=" + user +
                 '}';
     }
 }
