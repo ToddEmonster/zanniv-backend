@@ -3,12 +3,10 @@ package fr.todd.zanniv.service;
 import fr.todd.zanniv.entity.Birthday;
 import fr.todd.zanniv.entity.User;
 import fr.todd.zanniv.repository.BirthdayRepository;
-import fr.todd.zanniv.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BirthdayServiceImpl implements BirthdayService {
@@ -27,7 +25,7 @@ public class BirthdayServiceImpl implements BirthdayService {
     @Override
     public List<Birthday> getBirthdaysByUserId(Long userId) {
         // TODO surround with try catch from userService error "user not found"
-        User user = this.userService.findById(userId);
+        User user = this.userService.getUserById(userId);
         return this.birthdayRepository.findAllByUser(user);
     }
 
