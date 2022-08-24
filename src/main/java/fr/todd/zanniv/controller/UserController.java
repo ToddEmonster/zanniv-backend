@@ -1,5 +1,6 @@
 package fr.todd.zanniv.controller;
 
+import fr.todd.zanniv.entity.User;
 import fr.todd.zanniv.repository.UserRepository;
 import fr.todd.zanniv.service.dto.UserAuthDTO;
 import fr.todd.zanniv.exception.UserNotFoundException;
@@ -54,15 +55,17 @@ public class UserController {
         }
     }
 
-    @PostMapping()
-    public UserGetDTO authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) {
+    @PostMapping("/login")
+    public ResponseEntity<UserGetDTO> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) {
         try {
-            return userMapper.userToUserGetDto(
-                    this.userService.login(userAuthDTO.getEmail(), userAuthDTO.getPassword())
-                    );
+            UserGetDTO userAuthenticatedDTO = userMapper.userToUserGetDto(
+                    this.userService.login(userAuthDTO.getUsername(), userAuthDTO.getPassword())
+            );
+            System.out.println("ICI logged in");
+            return new ResponseEntity<>(userAuthenticatedDTO, HttpStatus.FOUND);
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } // TODO catch (BadCredentials)
     }
 }
