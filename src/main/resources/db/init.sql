@@ -1,26 +1,34 @@
 --
 -- MySQL Zanniv Script
 --
+/* ---------------------------------------------------------------
+ * Suppression des tables
+ */
+
+SET foreign_key_checks = 0;
+DROP TABLE `User`;
+DROP TABLE `Birthday`;
+SET foreign_key_checks = 1;
 
 /* ---------------------------------------------------------------
  * Creation des tables
  */
 -- DROP TABLE `User`;
 CREATE TABLE `User` (
-    `id` BIGINT,
-    `username` VARCHAR(255),
-    `password` VARCHAR(255),
-    `email` varchar(255),
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(255)  NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `email` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 -- DROP TABLE `Birthday`;
 CREATE TABLE `Birthday` (
-    `id` BIGINT,
-    `date` DATE,
-    `firstname` VARCHAR(255),
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `date` DATE NOT NULL,
+    `firstname` VARCHAR(255) NOT NULL,
     `lastname` VARCHAR(255),
-    `user_id` BIGINT,
+    `user_id` BIGINT NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`user_id`)
         REFERENCES `User`(`id`)

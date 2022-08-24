@@ -1,10 +1,13 @@
 package fr.todd.zanniv.controller;
 
 import fr.todd.zanniv.entity.User;
+import fr.todd.zanniv.exception.EmailAlreadyExistsException;
+import fr.todd.zanniv.exception.UsernameAlreadyExistsException;
 import fr.todd.zanniv.repository.UserRepository;
 import fr.todd.zanniv.service.dto.UserAuthDTO;
 import fr.todd.zanniv.exception.UserNotFoundException;
 import fr.todd.zanniv.service.UserService;
+import fr.todd.zanniv.service.dto.UserCreateDTO;
 import fr.todd.zanniv.service.dto.UserGetDTO;
 import fr.todd.zanniv.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +64,24 @@ public class UserController {
             UserGetDTO userAuthenticatedDTO = userMapper.userToUserGetDto(
                     this.userService.login(userAuthDTO.getUsername(), userAuthDTO.getPassword())
             );
-            System.out.println("ICI logged in");
             return new ResponseEntity<>(userAuthenticatedDTO, HttpStatus.FOUND);
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } // TODO catch (BadCredentials)
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<UserGetDTO> create(@Valid @RequestBody UserCreateDTO newUserDTO) {
+        try {
+            User newUser = this.userService.save(userMapper.userCreateDtoToUser(newUserDTO));
+            return new ResponseEntity<>(userMapper.userToUserGetDto(newUser), HttpStatus.CREATED);
+        } catch (EmailAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        } catch (UsernameAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
     }
 }
