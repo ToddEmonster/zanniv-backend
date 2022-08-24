@@ -84,4 +84,29 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
     }
+
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Boolean> updatePassword(
+            @PathVariable("userId") Long userId,
+            @RequestBody String newPassword) {
+        try {
+            this.userService.updatePassword(userId, newPassword);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Boolean> delete(@PathVariable("userId") Long userId) {
+        try {
+            this.userService.delete(userId);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
 }

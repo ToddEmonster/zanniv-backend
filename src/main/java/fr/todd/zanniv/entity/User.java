@@ -23,7 +23,7 @@ public class User {
     @Column(name="email")
     private String email;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Birthday> birthdays;
 
     public User() {

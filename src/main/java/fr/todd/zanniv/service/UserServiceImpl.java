@@ -48,4 +48,22 @@ public class UserServiceImpl implements UserService {
         }
         return this.userRepository.save(newUser);
     }
+
+    @Override
+    public boolean updatePassword(Long userId, String newPassword) throws UserNotFoundException {
+        if (this.userRepository.existsById(userId)) {
+            return this.userRepository.updatePassword(userId, newPassword) > 0;
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    @Override
+    public void delete(Long userId) {
+        if (this.userRepository.existsById(userId)) {
+            this.userRepository.deleteById(userId);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
 }
