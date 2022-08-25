@@ -48,6 +48,6 @@ VALUES
     (1, DATE("1996-06-04"), 'Todd', 'Raharivelo', 1),
     (2, DATE("1922-08-15"), 'Steven', 'Universe', 1),
     (3, DATE("1022-06-27"), 'Marceline', 'Vampire Queen', 1),
-    (4, DATE("1998-03-14"), 'Finn', 'TheHuman', 2),
-    (5, DATE("1222-10-16"), 'Bonnie', 'Bubblegum', 2),
-    (6, DATE("1987-07-09"), 'Rebecca', 'Sugar', 2);
+    (4, DATE("1998-03-14"), 'Finn', 'TheHuman', 4),
+    (5, DATE("1222-10-16"), 'Bonnie', 'Bubblegum', 4),
+    (6, DATE("1987-07-09"), 'Rebecca', 'Sugar', 4);

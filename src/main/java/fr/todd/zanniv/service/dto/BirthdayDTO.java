@@ -3,50 +3,39 @@ package fr.todd.zanniv.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
-public class BirthdayDTO {
-
-    @NotNull
-    @JsonProperty("date")
-    private LocalDate date;
+public class BirthdayDTO extends BirthdayCreateDTO {
 
     @NotNull
-    @JsonProperty("firstname")
-    private String firstname;
+    @JsonProperty("id")
+    private Long id;
 
     @NotNull
-    @JsonProperty("lastname")
-    private String lastname;
+    @JsonProperty("userId")
+    private Long userId;
 
-    public LocalDate getDate() {
-        return date;
+
+    public Long getId() {
+        return id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public Long getUserId() {
+        return userId;
     }
 
-    public String getLastname() {
-        return lastname;
+    public void setId(Long id) {
+        this.id = id;
     }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
     public String toString() {
         return "BirthdayDTO{" +
-                "date=" + date +
+                "id=" + id +
+                ", userId=" + userId +
+                ", date=" + date +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 '}';

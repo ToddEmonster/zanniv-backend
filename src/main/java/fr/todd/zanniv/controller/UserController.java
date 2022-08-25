@@ -1,14 +1,14 @@
 package fr.todd.zanniv.controller;
 
+import fr.todd.zanniv.entity.Birthday;
 import fr.todd.zanniv.entity.User;
 import fr.todd.zanniv.exception.EmailAlreadyExistsException;
 import fr.todd.zanniv.exception.UsernameAlreadyExistsException;
-import fr.todd.zanniv.repository.UserRepository;
-import fr.todd.zanniv.service.dto.UserAuthDTO;
+import fr.todd.zanniv.service.BirthdayService;
+import fr.todd.zanniv.service.dto.*;
 import fr.todd.zanniv.exception.UserNotFoundException;
 import fr.todd.zanniv.service.UserService;
-import fr.todd.zanniv.service.dto.UserCreateDTO;
-import fr.todd.zanniv.service.dto.UserGetDTO;
+import fr.todd.zanniv.service.mapper.BirthdayMapper;
 import fr.todd.zanniv.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,29 +27,28 @@ public class UserController {
     private UserMapper userMapper;
 
     @Autowired
+    private BirthdayMapper birthdayMapper;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
+    private BirthdayService birthdayService;
 
     @GetMapping(value = { "", "/" })
     public ResponseEntity<List<UserGetDTO>> getUsers() {
         List<UserGetDTO> allUsers = this.userService
                 .getAllUsers()
                 .stream()
-                .map(user -> {
-                    return this.userMapper.userToUserGetDto(user);
-                })
+                .map(this.userMapper::toGetDto)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
-    // TODO login error : return 403
-
     @GetMapping(value = { "/{userId}" })
     public ResponseEntity<UserGetDTO> getUserById(@PathVariable("userId") Long userId) {
         try {
-            UserGetDTO userDTO = userMapper.userToUserGetDto(this.userRepository.findById(userId).get());
+            UserGetDTO userDTO = userMapper.toGetDto(this.userService.getUserById(userId));
             return new ResponseEntity<>(userDTO, HttpStatus.FOUND);
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
@@ -61,21 +60,21 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserGetDTO> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) {
         try {
-            UserGetDTO userAuthenticatedDTO = userMapper.userToUserGetDto(
+            UserGetDTO userAuthenticatedDTO = userMapper.toGetDto(
                     this.userService.login(userAuthDTO.getUsername(), userAuthDTO.getPassword())
             );
             return new ResponseEntity<>(userAuthenticatedDTO, HttpStatus.FOUND);
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } // TODO catch (BadCredentials)
+        } // TODO catch (BadCredentials) return 403 Forbidden
     }
 
     @PostMapping("/signup")
     public ResponseEntity<UserGetDTO> create(@Valid @RequestBody UserCreateDTO newUserDTO) {
         try {
-            User newUser = this.userService.save(userMapper.userCreateDtoToUser(newUserDTO));
-            return new ResponseEntity<>(userMapper.userToUserGetDto(newUser), HttpStatus.CREATED);
+            User savedUser = this.userService.save(userMapper.toEntity(newUserDTO));
+            return new ResponseEntity<>(userMapper.toGetDto(savedUser), HttpStatus.CREATED);
         } catch (EmailAlreadyExistsException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
@@ -106,7 +105,19 @@ public class UserController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping(value= "/{userId}/birthdays")
+    public ResponseEntity<BirthdayDTO> createBirthday(
+            @PathVariable("userId") Long userId,
+            @Valid @RequestBody BirthdayCreateDTO newBirthdayDTO) {
+        if (!this.userService.existsById(userId)) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        User user = this.userService.getUserById(userId);
+        Birthday savedBirthday = this.birthdayService.save(birthdayMapper.createDtoToEntity(newBirthdayDTO, user));
+        return new ResponseEntity<>(birthdayMapper.toDto(savedBirthday), HttpStatus.CREATED);
     }
 }

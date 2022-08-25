@@ -14,8 +14,7 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class );
 
-    UserGetDTO userToUserGetDto(User user);
-
+    UserGetDTO toGetDto(User user);
     @InheritInverseConfiguration
-    User userCreateDtoToUser(UserCreateDTO userCreateDto);
+    User toEntity(UserCreateDTO userCreateDto);
 }

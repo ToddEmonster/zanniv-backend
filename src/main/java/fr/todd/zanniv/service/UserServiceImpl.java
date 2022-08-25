@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findAll();
     }
 
+    @Override
+    public boolean existsById(Long userId) {
+        return this.userRepository.existsById(userId);
+    }
+
     public User getUserById(Long userId) throws UserNotFoundException {
         Optional<User> optionalUser = this.userRepository.findById(userId);
         if (!optionalUser.isPresent()) {
@@ -51,19 +56,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updatePassword(Long userId, String newPassword) throws UserNotFoundException {
-        if (this.userRepository.existsById(userId)) {
-            return this.userRepository.updatePassword(userId, newPassword) > 0;
-        } else {
+        if (!this.userRepository.existsById(userId)) {
             throw new UserNotFoundException();
+        } else {
+            return this.userRepository.updatePassword(userId, newPassword) > 0;
         }
     }
 
     @Override
-    public void delete(Long userId) {
-        if (this.userRepository.existsById(userId)) {
-            this.userRepository.deleteById(userId);
-        } else {
+    public void delete(Long userId) throws UserNotFoundException {
+        if (!this.userRepository.existsById(userId)) {
             throw new UserNotFoundException();
+        } else {
+            this.userRepository.deleteById(userId);
         }
     }
 }
