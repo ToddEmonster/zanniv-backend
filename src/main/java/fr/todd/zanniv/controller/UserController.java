@@ -57,18 +57,18 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserGetDTO> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) {
-        try {
-            UserGetDTO userAuthenticatedDTO = userMapper.toGetDto(
-                    this.userService.login(userAuthDTO.getUsername(), userAuthDTO.getPassword())
-            );
-            return new ResponseEntity<>(userAuthenticatedDTO, HttpStatus.FOUND);
-        } catch (UserNotFoundException e) {
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } // TODO catch (BadCredentials) return 403 Forbidden
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<UserGetDTO> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) {
+//        try {
+//            UserGetDTO userAuthenticatedDTO = userMapper.toGetDto(
+//                    this.userService.login(userAuthDTO.getUsername(), userAuthDTO.getPassword())
+//            );
+//            return new ResponseEntity<>(userAuthenticatedDTO, HttpStatus.FOUND);
+//        } catch (UserNotFoundException e) {
+//            System.out.println(e.getMessage());
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        } // TODO catch (BadCredentials) return 403 Forbidden
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<UserGetDTO> create(@Valid @RequestBody UserCreateDTO newUserDTO) {

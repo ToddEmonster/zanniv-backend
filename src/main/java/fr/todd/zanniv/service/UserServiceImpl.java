@@ -5,7 +5,10 @@ import fr.todd.zanniv.exception.EmailAlreadyExistsException;
 import fr.todd.zanniv.exception.UserNotFoundException;
 import fr.todd.zanniv.exception.UsernameAlreadyExistsException;
 import fr.todd.zanniv.repository.UserRepository;
+import fr.todd.zanniv.security.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +72,16 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException();
         } else {
             this.userRepository.deleteById(userId);
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> optionalUser = this.userRepository.findUserByUsername(username);
+        if (!optionalUser.isPresent()) {
+            throw new UserNotFoundException();
+        } else {
+            return new MyUserPrincipal(optionalUser.get());
         }
     }
 }
