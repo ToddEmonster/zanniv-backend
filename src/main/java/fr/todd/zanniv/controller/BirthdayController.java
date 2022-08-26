@@ -4,7 +4,6 @@ import fr.todd.zanniv.entity.Birthday;
 import fr.todd.zanniv.exception.BirthdayNotFoundException;
 import fr.todd.zanniv.service.BirthdayService;
 import fr.todd.zanniv.service.UserService;
-import fr.todd.zanniv.service.dto.BirthdayCreateDTO;
 import fr.todd.zanniv.service.dto.BirthdayDTO;
 import fr.todd.zanniv.service.mapper.BirthdayMapper;
 import org.springframework.beans.factory.annotation.Autowired;
